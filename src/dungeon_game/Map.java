@@ -1,4 +1,4 @@
-package dungeon.game;
+package dungeon_game;
 
 public class Map {
 
