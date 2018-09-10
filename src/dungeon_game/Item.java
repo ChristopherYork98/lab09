@@ -1,5 +1,11 @@
 package dungeon_game;
 
-public class Item {
-
+public abstract class Item {
+	private String name;
+	
+	public Item(String name) {
+		this.name = name;
+	}
+	
+	
 }
