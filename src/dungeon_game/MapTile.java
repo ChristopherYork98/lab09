@@ -18,14 +18,21 @@ public class MapTile {
 	public MapTile(int row, int column) {
 		this.row = row;
 		this.column = column;
+		//this.terrain = null;
 	}
 	
 	public void addTerrain(Terrain t) {
-		terrain = t;
+		this.terrain = t;
 	}
 	
 	public void removeTerrain() {
 		terrain = null;
+	}
+	// probably change this to return what type of terrain later
+	public boolean hasTerrain() {
+		if (this.terrain != null)
+			return true;
+		return false;
 	}
 	
 	public void addItem(Item i) {
