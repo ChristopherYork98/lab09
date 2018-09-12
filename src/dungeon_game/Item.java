@@ -1,6 +1,6 @@
 package dungeon_game;
 
-public abstract class Item {
+public abstract class Item  {
 	private String name;
 	
 	public Item(String name) {
@@ -8,4 +8,5 @@ public abstract class Item {
 	}
 	
 	
+	                        
 }
