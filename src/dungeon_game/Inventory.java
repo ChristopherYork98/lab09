@@ -3,16 +3,16 @@ import java.util.*;
 
 
 public class Inventory {
-	private int space;
+	private int size;
 	private ArrayList<Item> items;
 	
-	public Inventory(int space) {
-		this.space = space;
+	public Inventory(int size) {
+		this.size = size;
 		this.items = new ArrayList<Item>();
  	}
 	
-	public Inventory(int space, ArrayList<Item> items) {
-		this.space = space;
+	public Inventory(int size, ArrayList<Item> items) {
+		this.size = size;
 		this.items = items;
 	}
 	
@@ -21,7 +21,7 @@ public class Inventory {
 	}
 	
 	public void add_item(Item new_item) {
-		if (number_of_items() < space) {
+		if (number_of_items() < size) {
 			items.add(new_item);	
 		}
 	}
