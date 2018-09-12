@@ -2,14 +2,8 @@ package dungeon_game;
 
 import java.time.Duration;
 
-public abstract class Potion extends Item{
-	public Duration last_time;
-
+public interface Potion extends ItemBehaviour{
+	public Duration duration_of_potion();
 	
-	public Potion(String name) {
-		super(name);
-		// TODO Auto-generated constructor stub
-	}
 	
-	public abstract void functionality();
 }
