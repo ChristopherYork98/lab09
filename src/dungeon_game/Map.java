@@ -8,28 +8,52 @@ public class Map {
 		this.mapsize = size;
 		map = new MapTile[size][size];
 		this.addTiles(); // creates MapTile objects and puts Walls on edges
+		this.addNeighbours(); //gives each tile the reference to adjacent MapTiles
 	}
 	
 	// adds walls to all MapTiles on the edge of the 2d array
-	public void addTiles() {
+	private void addTiles() {
 		for (int i = 0; i < mapsize; i++) {
 			for (int j = 0; j < mapsize; j++) {
 				map[i][j] = new MapTile(i, j);
 				if (i == 0 || j ==0 || i == mapsize-1 || j == mapsize-1) {
 					Terrain w = new Wall();
-					map[i][j].addTerrain(w);
+					map[i][j].addEntity(w);
 				}
 			}
 		}
 	}
 	
+	// adds references for adjacent tiles to each other
+	private void addNeighbours() {
+		for (int i = 0; i < mapsize; i++) {
+			for (int j = 0; j < mapsize; j++) {
+				if (i > 0)
+					map[i][j].setUp(map[i-1][j]);
+				if (i < mapsize-1)
+					map[i][j].setDown(map[i+1][j]);
+				if (j > 0)
+					map[i][j].setLeft(map[i][j-1]);
+				if (j < mapsize-1)
+					map[i][j].setRight(map[i][j+1]);
+			}
+		}
+	}
+	
+	// takes object then calls MapTiles to move them
+	// objects passed in should have method named 'move' that returns a String ("up", "down", "right", "left")
+	public void MoveEntity(Object o) {
+	
+	}
 	
 	// for early troubleshooting
 	public void printOnTerminal() {
 		for (int i = 0; i < mapsize; i++) {
 			for (int j = 0; j < mapsize; j++) {
-				if (map[i][j].hasTerrain())
+				if (map[i][j].isPassable())
 					System.out.print("T ");
+				else if (map[i][j].hasPlayer())
+					System.out.print("C ");
 				else
 					System.out.print("F ");
 			}
@@ -40,9 +64,9 @@ public class Map {
 	// main function only for early testing and debugging
 	public static void main(String[] args) {
 		Map m = new Map(8);
-		System.out.println(m.mapsize);
-		Terrain t = new Wall();
-		//m.map[0][0].addTerrain(t);
+		//System.out.println(m.mapsize);
+		PlayerCharacter p = new PlayerCharacter();
+		m.map[3][3].addEntity(p);
 		m.printOnTerminal();
 	}
 	

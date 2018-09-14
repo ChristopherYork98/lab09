@@ -1,54 +1,100 @@
 package dungeon_game;
 
+import java.util.ArrayList;
+
 public class MapTile {
 	// Co-ordinates of MapTile
 	private int row;
 	private int column;
-	private Terrain terrain;
-	private Item item;
-	private Enemy enemy;
-	
-	// Holds its neigbours, may use, may not
-//	private MapTile up;
-//	private MapTile down;
-//	private MapTile left;
-//	private MapTile right;
+	// adjacent tiles
+	private MapTile up;
+	private MapTile down;
+	private MapTile left;
+	private MapTile right;
+	// list of entities currently in this MapTile
+	private ArrayList entities;	
 	
 	// must be give co-ordinates to be created
 	public MapTile(int row, int column) {
 		this.row = row;
 		this.column = column;
-		//this.terrain = null;
+		this.entities = new ArrayList(); // add generic type later
 	}
 	
-	public void addTerrain(Terrain t) {
-		this.terrain = t;
+	public int getRow() {
+		return row;
 	}
 	
-	public void removeTerrain() {
-		terrain = null;
+	public int getColumn() {
+		return column;
 	}
-	// probably change this to return what type of terrain later
-	public boolean hasTerrain() {
-		if (this.terrain != null)
-			return true;
+	
+	public void addEntity(Object o) {
+		entities.add(o);
+	}
+	
+	public void removeEntity(Object o) {
+		entities.remove(o);
+	}
+	
+	// change this later - will check is any objects of type Enemies or impassable terrain
+	public boolean isPassable() {
+		if (entities.size() > 0)
+			return false;
+		return true;
+	}
+	
+	public boolean hasEnemy() {
+		for (Object o: entities)
+			if (o instanceof Enemy)
+				return true;
 		return false;
 	}
 	
-	public void addItem(Item i) {
-		item = i;
+	public void killEnemy() {
+		for (Object o: entities)
+			if (o instanceof Enemy)
+				this.removeEntity(o);
 	}
 	
-	public void removeItem() {
-		item = null;
+	public boolean hasPlayer() {
+		for (Object o: entities)
+			if (o instanceof PlayerCharacter)
+				return true;
+		return false;
 	}
 	
-	public void addEnemy(Enemy e) {
-		enemy = e;
+	// Moves specified object to the adjacent tile
+	public void MoveUp(Object o) {
+		up.addEntity(o);
+		this.removeEntity(o);
+	}
+	public void MoveDown(Object o) {
+		down.addEntity(o);
+		this.removeEntity(o);
+	}
+	public void MoveRight(Object o) {
+		right.addEntity(o);
+		this.removeEntity(o);
+	}
+	public void MoveLeft(Object o) {
+		left.addEntity(o);
+		this.removeEntity(o);
 	}
 	
-	public void removeEnemy() {
-		enemy = null;
+	// links adjacent tiles
+	public void setUp(MapTile t) {
+		up = t;
 	}
+	public void setDown(MapTile t) {
+		down = t;
+	}
+	public void setRight(MapTile t) {
+		right = t;
+	}	
+	public void setLeft(MapTile t) {
+		left = t;
+	}
+	
 }
 
