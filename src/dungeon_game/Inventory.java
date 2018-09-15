@@ -20,10 +20,12 @@ public class Inventory {
 		return items.size();
 	}
 	
-	public void add_item(Item new_item) {
+	public Item add_item(Item new_item) {
 		if (number_of_items() < size) {
-			items.add(new_item);	
+			items.add(new_item);
+			return new_item;
 		}
+		return null;
 	}
 	
 	public void remove_item(Item item) {
