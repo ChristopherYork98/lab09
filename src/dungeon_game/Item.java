@@ -1,11 +1,9 @@
 package dungeon_game;
 
-public abstract class Item  {
-	private String name;
-	
-	public Item(String name) {
-		this.name = name;
-	}
+public interface Item  {
+
+
+	public void itembehaviour(PlayerCharacter player);
 	
 	
 	                        
