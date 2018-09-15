@@ -5,6 +5,7 @@ public class Boulder extends Terrain{
 	public Boulder() {
 		this.passable = false;
 	}
+	@Override
 	public boolean isPassable() {
 		return passable;
 	}

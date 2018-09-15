@@ -6,7 +6,7 @@ public class Door extends Terrain {
 	public Door() {
 		this.passable = false;
 	}
-	
+	@Override
 	public boolean isPassable() {
 		return passable;
 	}

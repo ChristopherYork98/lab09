@@ -4,7 +4,6 @@ public class Map {
 	private int mapsize; // map is a square, this is the side length 
 	private MapTile[][] map;
 	private String command; //the input from the user (assume it is "up", "down", "left", or "right")
-	private String previouscommand;
 	public Map(int size) {
 		this.mapsize = size;
 		map = new MapTile[size][size];
@@ -49,6 +48,10 @@ public class Map {
 	    		if (from.getUp().BoulderCheck() && from.getUp().canMoveUp(o)) {
 	    			from.MoveUp(o);
 	    			from.getUp().MoveUp(o);
+	    			from.getUp().triggerSwitch();
+	    		}
+	    		else if (from.getUp().PitCheck()) {// we can add hover potion stuff here
+	    			System.out.print("You have died.\n");
 	    		}
 	    		else if (from.canMoveUp(o)) {
 		    		from.MoveUp(o);
@@ -59,6 +62,10 @@ public class Map {
 	    		if (from.getLeft().BoulderCheck() && from.getLeft().canMoveLeft(o)) {
 	    			from.MoveLeft(o);
 	    			from.getLeft().MoveLeft(o);
+	    			from.getLeft().triggerSwitch();
+	    		}
+	    		else if (from.getLeft().PitCheck()) {
+	    			System.out.print("You have died.\n");
 	    		}
 	    		else if (from.canMoveLeft(o)) {
 		    		from.MoveLeft(o);
@@ -69,7 +76,12 @@ public class Map {
 	    		if (from.getRight().BoulderCheck() && from.getRight().canMoveRight(o)) {
 	    			from.MoveRight(o);
 	    			from.getRight().MoveRight(o);
+	    			from.getRight().triggerSwitch();
 	    		}
+	    		else if (from.getRight().PitCheck()) {
+	    			System.out.print("You have died.\n");
+	    		}
+	    		
 	    		else if (from.canMoveRight(o)) {
 		    		from.MoveRight(o);
 	    		}
@@ -79,7 +91,12 @@ public class Map {
 	    		if (from.getDown().BoulderCheck() && from.getDown().canMoveDown(o)) {
 	    			from.MoveDown(o);
 	    			from.getDown().MoveDown(o);
+	    			from.getDown().triggerSwitch();
 	    		}
+	    		else if (from.getDown().PitCheck()) {
+	    			System.out.print("You have died.\n");
+	    		}
+	    		
 	    		else if (from.canMoveDown(o)) {
 		    		from.MoveDown(o);
 	    		}
@@ -94,10 +111,13 @@ public class Map {
 	public void printOnTerminal() {
 		for (int i = 0; i < mapsize; i++) {
 			for (int j = 0; j < mapsize; j++) {
-				if (map[i][j].isPassable())
-					System.out.print("T ");
-				else if (map[i][j].hasPlayer())
+				if (map[i][j].hasPlayer())
 					System.out.print("C ");
+				else if (map[i][j].BoulderCheck()) {
+					System.out.print("B ");
+				}
+				else if (map[i][j].isPassable())
+					System.out.print("T ");
 				else
 					System.out.print("F ");
 			}
@@ -110,8 +130,11 @@ public class Map {
 		Map m = new Map(8);
 		//System.out.println(m.mapsize);
 		PlayerCharacter p = new PlayerCharacter();
-		m.map[3][3].addEntity(p);
+		m.map[6][6].addEntity(p);
 		m.printOnTerminal();
+		m.MoveEntity(p,m.map[6][6],"down");
+		m.printOnTerminal();
+
 	}
 	
 }

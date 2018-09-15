@@ -36,11 +36,27 @@ public class MapTile {
 	public void removeEntity(Object o) {
 		entities.remove(o);
 	}
-	
+	public void triggerSwitch() {
+		boolean flag = false;
+		for (Object o : entities) {
+			if (o instanceof Boulder) {
+				flag = true;
+			}
+			if (flag == true && o instanceof FloorSwitch ) {
+				((FloorSwitch) o).trigger();
+			}
+		}
+	}
 	// change this later - will check is any objects of type Enemies or impassable terrain
+	//Change terrain to an abstract class later
 	public boolean isPassable() {
-		if (entities.size() > 0)
-			return false;
+		for (Object o : entities) {
+			if (o instanceof Terrain) {
+				if (((Terrain) o).isPassable() == false) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 	
@@ -96,6 +112,22 @@ public class MapTile {
 	public boolean BoulderCheck() {//Checks a given MapTile (decided by map), to see if the boulder moves with the player, or if the boulder becomes like a wall
 		for (Object o: entities) {
 			if (o instanceof Boulder) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean PitCheck() {//Checks a given MapTile (decided by map), to see if the boulder moves with the player, or if the boulder becomes like a wall
+		for (Object o: entities) {
+			if (o instanceof Pit) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean FWCheck() {
+		for (Object o: entities) {
+			if (o instanceof FloorSwitch) {
 				return true;
 			}
 		}
