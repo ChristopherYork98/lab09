@@ -81,7 +81,26 @@ public class MapTile {
 		left.addEntity(o);
 		this.removeEntity(o);
 	}
-	
+	public boolean canMoveLeft(Object o) {//Mainly for player character but also enemies
+		return left.isPassable();
+	}
+	public boolean canMoveRight(Object o) {//Mainly for player character but also enemies
+		return right.isPassable();
+	}
+	public boolean canMoveDown(Object o) {//Mainly for player character but also enemies
+		return down.isPassable();
+	}
+	public boolean canMoveUp(Object o) {//Mainly for player character but also enemies
+		return up.isPassable();
+	}
+	public boolean BoulderCheck() {//Checks a given MapTile (decided by map), to see if the boulder moves with the player, or if the boulder becomes like a wall
+		for (Object o: entities) {
+			if (o instanceof Boulder) {
+				return true;
+			}
+		}
+		return false;
+	}
 	// links adjacent tiles
 	public void setUp(MapTile t) {
 		up = t;
@@ -95,6 +114,23 @@ public class MapTile {
 	public void setLeft(MapTile t) {
 		left = t;
 	}
+
+	public MapTile getUp() {
+		return up;
+	}
+
+	public MapTile getDown() {
+		return down;
+	}
+
+	public MapTile getLeft() {
+		return left;
+	}
+
+	public MapTile getRight() {
+		return right;
+	}
+	
 	
 }
 

@@ -3,7 +3,8 @@ package dungeon_game;
 public class Map {
 	private int mapsize; // map is a square, this is the side length 
 	private MapTile[][] map;
-	
+	private String command; //the input from the user (assume it is "up", "down", "left", or "right")
+	private String previouscommand;
 	public Map(int size) {
 		this.mapsize = size;
 		map = new MapTile[size][size];
@@ -42,10 +43,53 @@ public class Map {
 	
 	// takes object then calls MapTiles to move them
 	// objects passed in should have method named 'move' that returns a String ("up", "down", "right", "left")
-	public void MoveEntity(Object o) {
-	
+	public void MoveEntity(Object o, MapTile from, String command) {
+	    if (o instanceof PlayerCharacter) {
+	    	if (command=="up") {
+	    		if (from.getUp().BoulderCheck() && from.getUp().canMoveUp(o)) {
+	    			from.MoveUp(o);
+	    			from.getUp().MoveUp(o);
+	    		}
+	    		else if (from.canMoveUp(o)) {
+		    		from.MoveUp(o);
+	    		}
+
+	    	}
+	    	if (command=="left") {
+	    		if (from.getLeft().BoulderCheck() && from.getLeft().canMoveLeft(o)) {
+	    			from.MoveLeft(o);
+	    			from.getLeft().MoveLeft(o);
+	    		}
+	    		else if (from.canMoveLeft(o)) {
+		    		from.MoveLeft(o);
+	    		}
+
+	    	}
+	    	if (command=="right") {
+	    		if (from.getRight().BoulderCheck() && from.getRight().canMoveRight(o)) {
+	    			from.MoveRight(o);
+	    			from.getRight().MoveRight(o);
+	    		}
+	    		else if (from.canMoveRight(o)) {
+		    		from.MoveRight(o);
+	    		}
+
+	    	}
+	    	if (command=="down") {
+	    		if (from.getDown().BoulderCheck() && from.getDown().canMoveDown(o)) {
+	    			from.MoveDown(o);
+	    			from.getDown().MoveDown(o);
+	    		}
+	    		else if (from.canMoveDown(o)) {
+		    		from.MoveDown(o);
+	    		}
+
+	    	}
+	    }
 	}
-	
+	private String getCommand() {
+		return this.command;
+	}
 	// for early troubleshooting
 	public void printOnTerminal() {
 		for (int i = 0; i < mapsize; i++) {
