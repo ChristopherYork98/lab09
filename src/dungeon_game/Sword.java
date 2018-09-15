@@ -1,24 +1,24 @@
 package dungeon_game;
 
-public class Sword extends Item implements Weapon {
-	private int used_hit;
+public class Sword implements Weapon {
+	private int hitCount;
 	
-	public Sword(String name) {
-		super(name);
-		this.used_hit = 0;
-		// TODO Auto-generated constructor stub
+	public Sword() {
+		this.hitCount = 0;
 	}
 
-	
-	@Override
-	public void itembehaviour() {
-		//TODO Auto-generated method stub
-		
-	}
-	
+
 	@Override
 	public int limit_of_hits() {
 		return 5;
+	}
+	
+	
+	@Override
+	public void itembehaviour(PlayerCharacter player) {
+		if (hitCount < limit_of_hits()) {
+			player.facing_Maptile().killEnemy();
+		}
 	}
 	
 	
