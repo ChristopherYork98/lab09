@@ -1,23 +1,19 @@
 package dungeon_game;
-import java.time.Duration;
 
 
-public class Hover_Potion implements Potion {
-	private Duration duration;
+public class Hover_Potion implements Item{
+	private int time;
 	
-	public Hover_Potion(Duration duration){
-		this.duration = duration;
+	public Hover_Potion(int time){
+		this.time = time;
 	}
 	
-	@Override
-	public void itembehaviour() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
-	public boolean if_has_duration_limit() {
+	public void itembehaviour(PlayerCharacter player) {
 		// TODO Auto-generated method stub
-		return true;
+		player.setHovering(true);
 	}
+
+
 }
