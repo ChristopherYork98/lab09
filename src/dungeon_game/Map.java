@@ -72,6 +72,7 @@ public class Map {
 	    		}
 	    		else if (from.canMoveUp(o)) {
 		    		from.MoveUp(o);
+		    		
 	    		}
 
 	    	}
@@ -133,6 +134,13 @@ public class Map {
 	private String getCommand() {
 		return this.command;
 	}
+	
+	public MapTile get_maptile(int i,int j) {
+		return map[i][j];
+	}
+	
+	
+	
 	// for early troubleshooting
 	public void printOnTerminal() {
 		boolean flag = false;
@@ -179,6 +187,8 @@ public class Map {
 		//System.out.println(m.mapsize);
 		PlayerCharacter p = new PlayerCharacter();
 		m.map[6][6].addEntity(p);
+		
+		m.MoveEntity(p, m.get_maptile(5, 6), "up");
 		m.printOnTerminal();
 		m.MoveEntity(p,m.map[6][6],"down");
 		m.printOnTerminal();

@@ -13,4 +13,7 @@ public class Terrain {
     	current = this.current;
     }
     
+    public MapTile get_MapTile() {
+    	return current;
+    }
 }

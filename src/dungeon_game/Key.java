@@ -9,7 +9,7 @@ public class Key implements Item  {
 
 	@Override
 	public void itembehaviour(PlayerCharacter player) {
-		MapTile maptile = player.get_MapTile();
+		MapTile maptile = player.facing_Maptile();
 		if (maptile.hasDoor() != null) {
 			Door door = maptile.hasDoor();
 			if (door.getDoorvalue() == KeyValue)

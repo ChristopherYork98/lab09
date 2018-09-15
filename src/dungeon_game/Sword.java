@@ -18,6 +18,7 @@ public class Sword implements Weapon {
 	public void itembehaviour(PlayerCharacter player) {
 		if (hitCount < limit_of_hits()) {
 			player.facing_Maptile().killEnemy();
+			hitCount ++;
 		}
 	}
 	

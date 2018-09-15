@@ -13,9 +13,11 @@ public class PlayerCharacter {
 	public PlayerCharacter() {
 		this.Inhand = null;
 		this.Inventory = new Inventory(20);
+		this.direction = "right";
 		this.invinciblity = false;
 		this.hovering = false;
 		this.currentTreasure = 0;
+		this.maptile = null;
 	}
 	
 	public PlayerCharacter(int inventoryspace) {
@@ -26,12 +28,12 @@ public class PlayerCharacter {
 		this.currentTreasure = 0;
 	}
 	
-	public void add_treasure(int value) {
-		currentTreasure += value;
+	public void add_treasure(Treasure t) {
+		currentTreasure += t.get_value();
 	}
 	
-	public Item pickupItem(Item item) {
-		return Inventory.add_item(item);
+	public int get_treasure() {
+		return currentTreasure;
 	}
 	
 	public void dropItem(Item item) {
@@ -43,9 +45,18 @@ public class PlayerCharacter {
 		Inventory.remove_item(item);
 	}
 	
-	public void picking_up_item() {
+	public Item add_item(Item new_item) {
+		Item item = Inventory.add_item(new_item);
+		return item;
+	}
+	
+	public void pick_up_item() {
 		ArrayList<Item> item_list = maptile.get_items();
 		for (Item item:item_list) {
+			if (item instanceof Treasure) {
+				add_treasure((Treasure)item);
+				continue;
+			}
 			Inventory.add_item(item);
 		}
 	}
@@ -54,7 +65,9 @@ public class PlayerCharacter {
 		return maptile;
 	}
 	
-	public void use_weapons() {
+	public void use_item() {
+		if (Inhand != null)
+			Inhand.itembehaviour(this);
 	}
 	
 	
@@ -84,6 +97,20 @@ public class PlayerCharacter {
 		this.hovering = hovering;
 	}
 
+	public String get_direction() {
+		return this.direction;
+	}
+
+	public void set_maptile(MapTile maptile) {
+		this.maptile = maptile;
+	}
+	
+	public void make_a_move(MapTile maptile) {
+		set_maptile(maptile);
+		maptile.collision();
+		pick_up_item();
+	}
+	
 	
 
 	

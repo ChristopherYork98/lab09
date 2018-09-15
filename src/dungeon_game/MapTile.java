@@ -1,6 +1,7 @@
 package dungeon_game;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MapTile {
 	// Co-ordinates of MapTile
@@ -12,13 +13,13 @@ public class MapTile {
 	private MapTile left;
 	private MapTile right;
 	// list of entities currently in this MapTile
-	private ArrayList entities;	
+	private ArrayList<Object> entities;	
 	
 	// must be give co-ordinates to be created
 	public MapTile(int row, int column) {
 		this.row = row;
 		this.column = column;
-		this.entities = new ArrayList(); // add generic type later
+		this.entities = new ArrayList<Object>(); // add generic type later
 	}
 	
 	public int getRow() {
@@ -31,6 +32,9 @@ public class MapTile {
 	
 	public void addEntity(Object o) {
 		entities.add(o);
+		if (o instanceof PlayerCharacter) {
+			((PlayerCharacter) o).make_a_move(this);
+		}
 	}
 	
 	public void removeEntity(Object o) {
@@ -76,13 +80,18 @@ public class MapTile {
 	}
 	
 	public void killEnemy() {
-		for (Object o: entities)
+//		for (Object o: entities) 
+//			if (o instanceof Enemy)
+//				this.removeEntity(o);
+		for (Iterator<Object> it = entities.iterator();it.hasNext();) {
+			Object o = it.next();
 			if (o instanceof Enemy)
-				this.removeEntity(o);
+				it.remove();
+		}
 	}
 	
 	public boolean hasPlayer() {
-		for (Object o: entities)
+		for (Object o: entities) 
 			if (o instanceof PlayerCharacter)
 				return true;
 		return false;
@@ -105,6 +114,7 @@ public class MapTile {
 		if (o instanceof Terrain) {
 			setTerrainPos((Terrain )o, up);
 		}
+
 		this.removeEntity(o);
 	}
 	public void MoveDown(Object o) {
@@ -112,6 +122,7 @@ public class MapTile {
 		if (o instanceof Terrain) {
 			setTerrainPos((Terrain )o, down);
 		}
+
 		this.removeEntity(o);
 	}
 	public void MoveRight(Object o) {
@@ -119,6 +130,7 @@ public class MapTile {
 		if (o instanceof Terrain) {
 			setTerrainPos((Terrain )o, right);
 		}
+
 		this.removeEntity(o);
 	}
 	public void MoveLeft(Object o) {
@@ -126,6 +138,7 @@ public class MapTile {
 		if (o instanceof Terrain) {
 			setTerrainPos((Terrain )o, left);
 		}
+
 		this.removeEntity(o);
 	}
 	public boolean canMoveLeft(Object o) {//Mainly for player character but also enemies
@@ -225,10 +238,7 @@ public class MapTile {
 		if (hasEnemy() && hasPlayer()) {
 			PlayerCharacter player = get_player();
 			if (player.Invinciblity()) {
-				for (Object o:entities) {
-					if (o instanceof Enemy)
-						this.removeEntity(o);
-				}
+				killEnemy();
 			} else {
 				entities.remove(player);
 			}				
