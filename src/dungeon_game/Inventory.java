@@ -30,7 +30,5 @@ public class Inventory {
 		items.remove(item);
 	}
 	
-
 	
 }
-
