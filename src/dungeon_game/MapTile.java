@@ -87,6 +87,15 @@ public class MapTile {
 				return true;
 		return false;
 	}
+	
+	public PlayerCharacter get_player(){
+		for (Object o:entities) {
+			if (o instanceof PlayerCharacter)
+				return (PlayerCharacter)o;
+		}
+		return null;
+	}
+	
 	public void setTerrainPos(Terrain t, MapTile dest) {
 		t.setCurrent(dest);
 	}
@@ -191,6 +200,47 @@ public class MapTile {
 
 	public MapTile getRight() {
 		return right;
+	}
+	
+	
+	//get the list of items on this tile
+	public ArrayList<Item> get_items(){
+		ArrayList<Item> item_list = new ArrayList<Item>();
+		for (Object o:entities) {
+			if (o instanceof Item) {
+				Item item  = (Item)o;
+				item_list.add(item);
+			}
+		}
+		return item_list;
+	}
+	
+	public void remove_all_entities() {
+		entities.clear();		
+	}
+	
+	
+	//when enemy collides with player
+	public void collision() {
+		if (hasEnemy() && hasPlayer()) {
+			PlayerCharacter player = get_player();
+			if (player.Invinciblity()) {
+				for (Object o:entities) {
+					if (o instanceof Enemy)
+						this.removeEntity(o);
+				}
+			} else {
+				entities.remove(player);
+			}				
+		}
+	}
+	
+	public Door hasDoor() {
+		for (Object o:entities) {
+			if (o instanceof Door)
+				return (Door)o;
+		}
+		return null;
 	}
 	
 	
