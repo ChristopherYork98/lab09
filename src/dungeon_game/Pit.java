@@ -2,7 +2,8 @@ package dungeon_game;
 
 public class Pit extends Terrain {
 	private boolean passable;
-	public Pit() {
+	public Pit(MapTile current) {
+		super(current);
 		this.passable = true;
 	}
 	@Override

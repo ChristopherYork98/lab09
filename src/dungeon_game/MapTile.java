@@ -47,6 +47,14 @@ public class MapTile {
 			}
 		}
 	}
+	public boolean isTriggered() {
+		for (Object o : entities) {
+			if (o instanceof FloorSwitch && ((FloorSwitch) o).isTriggered()) {
+				return true;
+			}
+		}
+		return false;
+	}
 	// change this later - will check is any objects of type Enemies or impassable terrain
 	//Change terrain to an abstract class later
 	public boolean isPassable() {
@@ -79,22 +87,36 @@ public class MapTile {
 				return true;
 		return false;
 	}
-	
+	public void setTerrainPos(Terrain t, MapTile dest) {
+		t.setCurrent(dest);
+	}
 	// Moves specified object to the adjacent tile
 	public void MoveUp(Object o) {
 		up.addEntity(o);
+		if (o instanceof Terrain) {
+			setTerrainPos((Terrain )o, up);
+		}
 		this.removeEntity(o);
 	}
 	public void MoveDown(Object o) {
 		down.addEntity(o);
+		if (o instanceof Terrain) {
+			setTerrainPos((Terrain )o, down);
+		}
 		this.removeEntity(o);
 	}
 	public void MoveRight(Object o) {
 		right.addEntity(o);
+		if (o instanceof Terrain) {
+			setTerrainPos((Terrain )o, right);
+		}
 		this.removeEntity(o);
 	}
 	public void MoveLeft(Object o) {
 		left.addEntity(o);
+		if (o instanceof Terrain) {
+			setTerrainPos((Terrain )o, left);
+		}
 		this.removeEntity(o);
 	}
 	public boolean canMoveLeft(Object o) {//Mainly for player character but also enemies
@@ -130,6 +152,14 @@ public class MapTile {
 			if (o instanceof FloorSwitch) {
 				return true;
 			}
+		}
+		return false;
+	}
+	public boolean ExitCheck() {
+		for (Object o: entities) {
+			if (o instanceof Exit) {
+				return true;
+			}	
 		}
 		return false;
 	}

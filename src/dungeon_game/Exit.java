@@ -2,7 +2,8 @@ package dungeon_game;
 
 public class Exit extends Terrain {
 	private boolean passable;
-	public Exit() {
+	public Exit(MapTile current) {
+		super(current);
 		this.passable = true;
 	}
 	@Override

@@ -17,13 +17,26 @@ public class Map {
 			for (int j = 0; j < mapsize; j++) {
 				map[i][j] = new MapTile(i, j);
 				if (i == 0 || j ==0 || i == mapsize-1 || j == mapsize-1) {
-					Terrain w = new Wall();
+					Terrain w = new Wall(map[i][j]);
 					map[i][j].addEntity(w);
 				}
 			}
 		}
 	}
-	
+	public boolean checkSwitches() {//Returns true if there are no switches or if all switches are triggered
+		boolean isThereSwitches =  false;
+		for (int i = 0; i < mapsize; i++) {
+			for (int j = 0; j < mapsize; j++) {
+				if (map[i][j].FWCheck()) {
+					isThereSwitches = true;
+					if (!map[i][j].isTriggered()) {
+						return false;
+					}
+				}
+			}
+		}
+		return isThereSwitches;
+	}
 	// adds references for adjacent tiles to each other
 	private void addNeighbours() {
 		for (int i = 0; i < mapsize; i++) {
@@ -45,11 +58,15 @@ public class Map {
 	public void MoveEntity(Object o, MapTile from, String command) {
 	    if (o instanceof PlayerCharacter) {
 	    	if (command=="up") {
+	    		if (from.getUp().ExitCheck()) {
+	    			System.out.print("You have exited and won. \n");
+	    		}
 	    		if (from.getUp().BoulderCheck() && from.getUp().canMoveUp(o)) {
 	    			from.MoveUp(o);
 	    			from.getUp().MoveUp(o);
 	    			from.getUp().triggerSwitch();
 	    		}
+
 	    		else if (from.getUp().PitCheck()) {// we can add hover potion stuff here
 	    			System.out.print("You have died.\n");
 	    		}
@@ -59,6 +76,9 @@ public class Map {
 
 	    	}
 	    	if (command=="left") {
+	    		if (from.getLeft().ExitCheck()) {
+	    			System.out.print("You have exited and won. \n");
+	    		}
 	    		if (from.getLeft().BoulderCheck() && from.getLeft().canMoveLeft(o)) {
 	    			from.MoveLeft(o);
 	    			from.getLeft().MoveLeft(o);
@@ -73,6 +93,9 @@ public class Map {
 
 	    	}
 	    	if (command=="right") {
+	    		if (from.getRight().ExitCheck()) {
+	    			System.out.print("You have exited and won. \n");
+	    		}
 	    		if (from.getRight().BoulderCheck() && from.getRight().canMoveRight(o)) {
 	    			from.MoveRight(o);
 	    			from.getRight().MoveRight(o);
@@ -88,6 +111,9 @@ public class Map {
 
 	    	}
 	    	if (command=="down") {
+	    		if (from.getDown().ExitCheck()) {
+	    			System.out.print("You have exited and won. \n");
+	    		}
 	    		if (from.getDown().BoulderCheck() && from.getDown().canMoveDown(o)) {
 	    			from.MoveDown(o);
 	    			from.getDown().MoveDown(o);
@@ -109,17 +135,39 @@ public class Map {
 	}
 	// for early troubleshooting
 	public void printOnTerminal() {
+		boolean flag = false;
 		for (int i = 0; i < mapsize; i++) {
 			for (int j = 0; j < mapsize; j++) {
+				String identifier = "";
 				if (map[i][j].hasPlayer())
-					System.out.print("C ");
-				else if (map[i][j].BoulderCheck()) {
-					System.out.print("B ");
+					identifier += "C";
+					flag = true;
+					//System.out.print("C ");
+				if (map[i][j].BoulderCheck()) {
+					identifier += "B";
+					flag = true;
+					//System.out.print("B ");
 				}
-				else if (map[i][j].isPassable())
-					System.out.print("T ");
-				else
-					System.out.print("F ");
+				if (map[i][j].ExitCheck()) {
+					flag = true;
+					identifier += "E";
+					//System.out.print("E ");
+				}
+				if (map[i][j].FWCheck()) {
+					flag = true;
+					identifier += "S";
+					//System.out.print("F ");
+				}
+				else if (map[i][j].isPassable()) { //Normal floor
+					identifier += "T";
+				}
+					//System.out.print("T ");
+				else {
+					System.out.print("F");//Wall
+				}
+				System.out.print(identifier + " ");
+				flag = false;
+				
 			}
 			System.out.print("\n");
 		}

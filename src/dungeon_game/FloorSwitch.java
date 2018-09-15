@@ -3,7 +3,8 @@ package dungeon_game;
 public class FloorSwitch extends Terrain{
 	private boolean passable;
 	private boolean triggered;
-	public FloorSwitch() {
+	public FloorSwitch(MapTile current) {
+		super(current);
 		this.passable = true;
 		this.triggered = false;
 	}
@@ -13,6 +14,9 @@ public class FloorSwitch extends Terrain{
 	}
 	public void trigger() {
 		this.triggered = true;
+	}
+	public boolean isTriggered() {
+		return this.triggered;
 	}
 	
 }
