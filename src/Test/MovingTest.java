@@ -49,11 +49,35 @@ class MovingTest {
 		m.get_maptile(4,5).addEntity(boulder1);
 		Boulder boulder2 = new Boulder(m.get_maptile(3, 5));
 		m.get_maptile(3,5).addEntity(boulder2);
-		m.printOnTerminal();
 		m.MoveEntity(player, player.get_MapTile(), "up");
 		Assert.assertTrue(m.get_maptile(5, 5).hasPlayer());
 		Assert.assertEquals(m.get_maptile(4, 5),boulder1.get_MapTile());
 		Assert.assertEquals(m.get_maptile(3, 5),boulder2.get_MapTile());
 
 	}
+	@Test
+	public void WallTest() {
+		Map m = new Map(3);
+		PlayerCharacter player = new PlayerCharacter();
+		m.get_maptile(1,1).addEntity(player);
+		m.MoveEntity(player, player.get_MapTile(), "up");
+		m.MoveEntity(player, player.get_MapTile(), "down");
+		m.MoveEntity(player, player.get_MapTile(), "left");
+		m.MoveEntity(player, player.get_MapTile(), "right");
+		Assert.assertTrue(m.get_maptile(1, 1).hasPlayer());
+
+	}
+	@Test
+	public void SwitchTest() {
+		Map m = new Map(20);
+		PlayerCharacter player = new PlayerCharacter();
+		m.get_maptile(5,4).addEntity(player);
+		Boulder boulder = new Boulder(m.get_maptile(5, 5));
+		m.get_maptile(5, 5).addEntity(boulder);
+		FloorSwitch floorswitch = new FloorSwitch(m.get_maptile(5, 6));
+		m.get_maptile(5, 6).addEntity(floorswitch);
+		m.MoveEntity(player, player.get_MapTile(), "right");
+		Assert.assertTrue(m.checkSwitches());
+	}
+	
 }

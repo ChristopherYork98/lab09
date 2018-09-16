@@ -100,7 +100,7 @@ public class Map {
 	    		if (from.getRight().BoulderCheck() && from.getRight().canMoveRight(o)) {
 	    			from.getRight().MoveRight(from.getRight().get_boulder());
 	    			from.MoveRight(o);
-	    			from.getRight().triggerSwitch();
+	    			from.getRight().getRight().triggerSwitch();
 	    		}
 	    		else if (from.getRight().PitCheck()) {
 	    			System.out.print("You have died.\n");
@@ -194,13 +194,13 @@ public class Map {
 //		m.printOnTerminal();
 		Map m = new Map(20);
 		PlayerCharacter player = new PlayerCharacter();
-		m.get_maptile(5,5).addEntity(player);
-		Boulder boulder1 = new Boulder(m.get_maptile(5, 3));
-		m.get_maptile(4,5).addEntity(boulder1);
-		Boulder boulder2 = new Boulder(m.get_maptile(5, 2));
-		m.get_maptile(3,5).addEntity(boulder2);
-		m.printOnTerminal();
-		m.MoveEntity(player, player.get_MapTile(), "up");
+		m.get_maptile(5,4).addEntity(player);
+		Boulder boulder = new Boulder(m.get_maptile(5, 5));
+		m.get_maptile(5, 5).addEntity(boulder);
+		FloorSwitch floorswitch = new FloorSwitch(m.get_maptile(5, 6));
+		m.get_maptile(5, 6).addEntity(floorswitch);
+		m.MoveEntity(player, player.get_MapTile(), "right");
+		System.out.print(floorswitch.isTriggered());
 		m.printOnTerminal();
 
 	}
