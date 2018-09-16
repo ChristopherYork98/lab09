@@ -14,6 +14,9 @@ public class Door extends Terrain {
 	public void setDoorValue(int doorvalue) {
 		this.doorvalue = doorvalue;
 	}
+	public int getDoorValue(int doorvalue) {
+		return this.doorvalue;
+	}
 	public void unlock() {
 		this.passable = true;
 	}
