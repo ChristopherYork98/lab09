@@ -7,10 +7,13 @@ public class Terrain {
         return false;
     }
     public Terrain(MapTile current) {
-    	current = this.current;
+    	this.current = current;
     }
     public void setCurrent(MapTile current) {
-    	current = this.current;
+    	this.current = current;
     }
     
+    public MapTile get_MapTile() {
+    	return current;
+    }
 }

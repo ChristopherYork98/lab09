@@ -1,6 +1,7 @@
 package dungeon_game;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MapTile {
 	// Co-ordinates of MapTile
@@ -12,13 +13,13 @@ public class MapTile {
 	private MapTile left;
 	private MapTile right;
 	// list of entities currently in this MapTile
-	private ArrayList entities;	
+	private ArrayList<Object> entities;	
 	
 	// must be give co-ordinates to be created
 	public MapTile(int row, int column) {
 		this.row = row;
 		this.column = column;
-		this.entities = new ArrayList(); // add generic type later
+		this.entities = new ArrayList<Object>(); // add generic type later
 	}
 	
 	public int getRow() {
@@ -31,6 +32,9 @@ public class MapTile {
 	
 	public void addEntity(Object o) {
 		entities.add(o);
+		if (o instanceof PlayerCharacter) {
+			((PlayerCharacter) o).make_a_move(this);
+		}
 	}
 	
 	public void removeEntity(Object o) {
@@ -76,17 +80,31 @@ public class MapTile {
 	}
 	
 	public void killEnemy() {
-		for (Object o: entities)
+//		for (Object o: entities) 
+//			if (o instanceof Enemy)
+//				this.removeEntity(o);
+		for (Iterator<Object> it = entities.iterator();it.hasNext();) {
+			Object o = it.next();
 			if (o instanceof Enemy)
-				this.removeEntity(o);
+				it.remove();
+		}
 	}
 	
 	public boolean hasPlayer() {
-		for (Object o: entities)
+		for (Object o: entities) 
 			if (o instanceof PlayerCharacter)
 				return true;
 		return false;
 	}
+	
+	public PlayerCharacter get_player(){
+		for (Object o:entities) {
+			if (o instanceof PlayerCharacter)
+				return (PlayerCharacter)o;
+		}
+		return null;
+	}
+	
 	public void setTerrainPos(Terrain t, MapTile dest) {
 		t.setCurrent(dest);
 	}
@@ -96,6 +114,7 @@ public class MapTile {
 		if (o instanceof Terrain) {
 			setTerrainPos((Terrain )o, up);
 		}
+
 		this.removeEntity(o);
 	}
 	public void MoveDown(Object o) {
@@ -103,6 +122,7 @@ public class MapTile {
 		if (o instanceof Terrain) {
 			setTerrainPos((Terrain )o, down);
 		}
+
 		this.removeEntity(o);
 	}
 	public void MoveRight(Object o) {
@@ -110,6 +130,7 @@ public class MapTile {
 		if (o instanceof Terrain) {
 			setTerrainPos((Terrain )o, right);
 		}
+
 		this.removeEntity(o);
 	}
 	public void MoveLeft(Object o) {
@@ -117,6 +138,7 @@ public class MapTile {
 		if (o instanceof Terrain) {
 			setTerrainPos((Terrain )o, left);
 		}
+
 		this.removeEntity(o);
 	}
 	public boolean canMoveLeft(Object o) {//Mainly for player character but also enemies
@@ -139,6 +161,13 @@ public class MapTile {
 		}
 		return false;
 	}
+	public Boulder get_boulder(){
+		for (Object o:entities) {
+			if (o instanceof Boulder)
+				return (Boulder)o;
+		}
+		return null;
+	}
 	public boolean PitCheck() {//Checks a given MapTile (decided by map), to see if the boulder moves with the player, or if the boulder becomes like a wall
 		for (Object o: entities) {
 			if (o instanceof Pit) {
@@ -150,6 +179,14 @@ public class MapTile {
 	public boolean FWCheck() {
 		for (Object o: entities) {
 			if (o instanceof FloorSwitch) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean WallCheck() {
+		for (Object o: entities) {
+			if (o instanceof Wall) {
 				return true;
 			}
 		}
@@ -191,6 +228,44 @@ public class MapTile {
 
 	public MapTile getRight() {
 		return right;
+	}
+	
+	
+	//get the list of items on this tile
+	public ArrayList<Item> get_items(){
+		ArrayList<Item> item_list = new ArrayList<Item>();
+		for (Object o:entities) {
+			if (o instanceof Item) {
+				Item item  = (Item)o;
+				item_list.add(item);
+			}
+		}
+		return item_list;
+	}
+	
+	public void remove_all_entities() {
+		entities.clear();		
+	}
+	
+	
+	//when enemy collides with player
+	public void collision() {
+		if (hasEnemy() && hasPlayer()) {
+			PlayerCharacter player = get_player();
+			if (player.Invinciblity()) {
+				killEnemy();
+			} else {
+				entities.remove(player);
+			}				
+		}
+	}
+	
+	public Door hasDoor() {
+		for (Object o:entities) {
+			if (o instanceof Door)
+				return (Door)o;
+		}
+		return null;
 	}
 	
 	

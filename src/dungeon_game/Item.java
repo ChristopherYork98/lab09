@@ -1,5 +1,10 @@
 package dungeon_game;
 
-public class Item {
+public interface Item  {
 
+
+	public void itembehaviour(PlayerCharacter player);
+	
+	
+	                        
 }

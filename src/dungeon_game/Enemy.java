@@ -1,5 +1,8 @@
 package dungeon_game;
 
-public class Enemy {
-
+public abstract class Enemy {
+	
+	private String move;
+	
+	public abstract String move();
 }
