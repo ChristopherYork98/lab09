@@ -42,12 +42,19 @@ public class MapTile {
 	}
 	public void triggerSwitch() {
 		boolean flag = false;
+		if (FWCheck() && BoulderCheck()) {
+			for (Object o : entities) {
+				if (o instanceof FloorSwitch) {
+					((FloorSwitch) o).trigger();
+				}
+			}
+		}
 		for (Object o : entities) {
 			if (o instanceof Boulder) {
 				flag = true;
 			}
 			if (flag == true && o instanceof FloorSwitch ) {
-				((FloorSwitch) o).trigger();
+				
 			}
 		}
 	}
