@@ -62,8 +62,8 @@ public class Map {
 	    			System.out.print("You have exited and won. \n");
 	    		}
 	    		if (from.getUp().BoulderCheck() && from.getUp().canMoveUp(o)) {
+	    			from.getUp().MoveUp(from.getUp().get_boulder());
 	    			from.MoveUp(o);
-	    			from.getUp().MoveUp(o);
 	    			from.getUp().triggerSwitch();
 	    		}
 
@@ -81,8 +81,8 @@ public class Map {
 	    			System.out.print("You have exited and won. \n");
 	    		}
 	    		if (from.getLeft().BoulderCheck() && from.getLeft().canMoveLeft(o)) {
+	    			from.getLeft().MoveLeft(from.getLeft().get_boulder());
 	    			from.MoveLeft(o);
-	    			from.getLeft().MoveLeft(o);
 	    			from.getLeft().triggerSwitch();
 	    		}
 	    		else if (from.getLeft().PitCheck()) {
@@ -98,8 +98,8 @@ public class Map {
 	    			System.out.print("You have exited and won. \n");
 	    		}
 	    		if (from.getRight().BoulderCheck() && from.getRight().canMoveRight(o)) {
+	    			from.getRight().MoveRight(from.getRight().get_boulder());
 	    			from.MoveRight(o);
-	    			from.getRight().MoveRight(o);
 	    			from.getRight().triggerSwitch();
 	    		}
 	    		else if (from.getRight().PitCheck()) {
@@ -116,8 +116,8 @@ public class Map {
 	    			System.out.print("You have exited and won. \n");
 	    		}
 	    		if (from.getDown().BoulderCheck() && from.getDown().canMoveDown(o)) {
+	    			from.getDown().MoveDown(from.getDown().get_boulder());
 	    			from.MoveDown(o);
-	    			from.getDown().MoveDown(o);
 	    			from.getDown().triggerSwitch();
 	    		}
 	    		else if (from.getDown().PitCheck()) {
@@ -166,12 +166,12 @@ public class Map {
 					identifier += "S";
 					//System.out.print("F ");
 				}
-				else if (map[i][j].isPassable()) { //Normal floor
+				if (map[i][j].isPassable()) { //Normal floor
 					identifier += "T";
 				}
 					//System.out.print("T ");
-				else {
-					System.out.print("F");//Wall
+				if (map[i][j].WallCheck()) {
+					System.out.print("W");//Wall
 				}
 				System.out.print(identifier + " ");
 				flag = false;
@@ -183,14 +183,24 @@ public class Map {
 	
 	// main function only for early testing and debugging
 	public static void main(String[] args) {
-		Map m = new Map(8);
-		//System.out.println(m.mapsize);
-		PlayerCharacter p = new PlayerCharacter();
-		m.map[6][6].addEntity(p);
-		
-		m.MoveEntity(p, m.get_maptile(5, 6), "up");
+//		Map m = new Map(8);
+//		//System.out.println(m.mapsize);
+//		PlayerCharacter p = new PlayerCharacter();
+//		m.map[6][6].addEntity(p);
+//		
+//		m.MoveEntity(p, m.get_maptile(5, 6), "up");
+//		m.printOnTerminal();
+//		m.MoveEntity(p,m.map[6][6],"down");
+//		m.printOnTerminal();
+		Map m = new Map(20);
+		PlayerCharacter player = new PlayerCharacter();
+		m.get_maptile(5,5).addEntity(player);
+		Boulder boulder1 = new Boulder(m.get_maptile(5, 3));
+		m.get_maptile(4,5).addEntity(boulder1);
+		Boulder boulder2 = new Boulder(m.get_maptile(5, 2));
+		m.get_maptile(3,5).addEntity(boulder2);
 		m.printOnTerminal();
-		m.MoveEntity(p,m.map[6][6],"down");
+		m.MoveEntity(player, player.get_MapTile(), "up");
 		m.printOnTerminal();
 
 	}

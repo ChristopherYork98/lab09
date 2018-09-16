@@ -161,6 +161,13 @@ public class MapTile {
 		}
 		return false;
 	}
+	public Boulder get_boulder(){
+		for (Object o:entities) {
+			if (o instanceof Boulder)
+				return (Boulder)o;
+		}
+		return null;
+	}
 	public boolean PitCheck() {//Checks a given MapTile (decided by map), to see if the boulder moves with the player, or if the boulder becomes like a wall
 		for (Object o: entities) {
 			if (o instanceof Pit) {
@@ -172,6 +179,14 @@ public class MapTile {
 	public boolean FWCheck() {
 		for (Object o: entities) {
 			if (o instanceof FloorSwitch) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean WallCheck() {
+		for (Object o: entities) {
+			if (o instanceof Wall) {
 				return true;
 			}
 		}
