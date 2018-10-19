@@ -11,7 +11,7 @@ public class Customer {
 		_name = name;
 	};
 	
-	public void addRental(RentalItem rental) {
+	public void addRental(RentalBundles rental) {
 		_rentals.add(rental);
 	}
 	
@@ -35,7 +35,7 @@ public class Customer {
 		return result;
 	}
 
-	private int getFrequentRenterPoints(RentalItem r) {
+	public int getFrequentRenterPoints(RentalBundles r) {
 		return r.getFrequentRenterPoints();
 	}
 
@@ -46,7 +46,7 @@ public class Customer {
 //		return r.getCharge();
 //	}
 	
-	private double getTotalCharge() {
+	public double getTotalCharge() {
 		double result = 0;
 		for (RentalBundles r: _rentals) {
 			result += r.getCharge();
@@ -54,7 +54,7 @@ public class Customer {
 		return result;
 		}
 
-	private int getTotalFrequentPoints() {
+	public int getTotalFrequentPoints() {
 		int result = 0;
 		for (RentalBundles r: _rentals) {
 			result += r.getFrequentRenterPoints();
